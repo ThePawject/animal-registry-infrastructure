@@ -1,0 +1,19 @@
+output "vnet_id" {
+  value = azurerm_virtual_network.this.id
+}
+
+output "app_subnet_id" {
+  value = azurerm_subnet.app.id
+}
+
+output "private_endpoint_subnet_id" {
+  value = azurerm_subnet.private_endpoints.id
+}
+
+output "private_dns_zone_id" {
+  value = azurerm_private_dns_zone.sql.id
+}
+
+output "private_dns_zone_name" {
+  value = azurerm_private_dns_zone.sql.name
+}

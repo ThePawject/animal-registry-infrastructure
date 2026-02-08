@@ -1,0 +1,13 @@
+.idea/
+
+# Terraform state
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+*tfplan
+*.terraform.lock.hcl
+
+# Terraform variable files
+terraform/environments/dev/terraform.tfvars
+terraform/environments/prod/terraform.tfvars
