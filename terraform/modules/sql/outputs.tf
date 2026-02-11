@@ -25,3 +25,8 @@ output "databases" {
 output "fully_qualified_domain_name" {
   value = azurerm_mssql_server.this.fully_qualified_domain_name
 }
+
+output "sql_admin_login" {
+  value       = azurerm_mssql_server.this.administrator_login
+  description = "SQL Server administrator login"
+}

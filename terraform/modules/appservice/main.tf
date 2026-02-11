@@ -8,16 +8,19 @@ resource "azurerm_service_plan" "this" {
 }
 
 resource "azurerm_linux_web_app" "this" {
-  name                = "${var.name_prefix}-api"
-  resource_group_name = var.resource_group_name
-  location            = var.location
-  service_plan_id     = var.service_plan_id != null ? var.service_plan_id : azurerm_service_plan.this[0].id
+  name                      = "${var.name_prefix}-api"
+  resource_group_name       = var.resource_group_name
+  location                  = var.location
+  service_plan_id           = var.service_plan_id != null ? var.service_plan_id : azurerm_service_plan.this[0].id
+  virtual_network_subnet_id = var.subnet_id
 
   identity {
     type = "SystemAssigned"
   }
 
   site_config {
+    vnet_route_all_enabled = true
+
     application_stack {
       dotnet_version = var.dotnet_version
     }
@@ -31,6 +34,5 @@ resource "azurerm_linux_web_app" "this" {
     }
   }
 
-  app_settings              = var.app_settings
-  virtual_network_subnet_id = var.subnet_id
+  app_settings = var.app_settings
 }

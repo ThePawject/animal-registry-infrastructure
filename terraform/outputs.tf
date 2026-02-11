@@ -1,47 +1,39 @@
-# Dev Environment Outputs
-output "dev_api_url" {
-  value       = "https://${module.appservice_dev.web_app_default_hostname}"
-  description = "Dev API URL"
-}
-
-output "dev_database_name" {
-  value       = "dev-appdb"
-  description = "Dev database name"
-}
-
-output "dev_storage_container" {
-  value       = "dev-animal-images"
-  description = "Dev storage container name"
-}
-
-# Prod Environment Outputs
-output "prod_api_url" {
-  value       = "https://${module.appservice_prod.web_app_default_hostname}"
-  description = "Prod API URL"
-}
-
-output "prod_database_name" {
-  value       = "appdb"
-  description = "Prod database name"
-}
-
-output "prod_storage_container" {
-  value       = "animal-images"
-  description = "Prod storage container name"
-}
-
-# Shared Resources
 output "sql_server_name" {
-  value       = module.sql.server_name
   description = "SQL Server name"
+  value       = module.sql.server_name
 }
 
-output "storage_account_name" {
-  value       = module.storage.storage_account_name
-  description = "Storage account name"
+output "sql_server_fqdn" {
+  description = "SQL Server fully qualified domain name"
+  value       = module.sql.fully_qualified_domain_name
 }
 
-output "resource_group_name" {
-  value       = azurerm_resource_group.this.name
-  description = "Resource group name"
+output "key_vault_name" {
+  description = "Key Vault name"
+  value       = module.keyvault.key_vault_name
+}
+
+output "sql_admin_login" {
+  description = "SQL admin login username"
+  value       = "sqladmin"
+}
+
+output "connection_string_format_dev" {
+  description = "Connection string format for dev (use in App Service settings)"
+  value       = "Server=${module.sql.fully_qualified_domain_name};Database=dev-appdb;User ID=sqladmin;Password=@Microsoft.KeyVault(VaultName=${module.keyvault.key_vault_name};SecretName=sql-password);Encrypt=True;"
+}
+
+output "connection_string_format_prod" {
+  description = "Connection string format for prod (use in App Service settings)"
+  value       = "Server=${module.sql.fully_qualified_domain_name};Database=appdb;User ID=sqladmin;Password=@Microsoft.KeyVault(VaultName=${module.keyvault.key_vault_name};SecretName=sql-password);Encrypt=True;"
+}
+
+output "dev_webapp_name" {
+  description = "Dev web app name"
+  value       = module.appservice_dev.web_app_name
+}
+
+output "prod_webapp_name" {
+  description = "Prod web app name"
+  value       = module.appservice_prod.web_app_name
 }

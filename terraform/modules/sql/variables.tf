@@ -28,40 +28,22 @@ variable "aad_admin_tenant_id" {
   type        = string
 }
 
+variable "sql_admin_login" {
+  description = "SQL administrator login"
+  type        = string
+  default     = "sqladmin"
+}
+
+variable "sql_admin_password" {
+  description = "SQL administrator password"
+  type        = string
+  sensitive   = true
+}
+
 variable "sku_name" {
   description = "SQL database SKU"
   type        = string
   default     = "Basic"
-}
-
-variable "create_private_endpoint" {
-  description = "Whether to create private endpoint"
-  type        = bool
-  default     = false
-}
-
-variable "private_endpoint_subnet_id" {
-  description = "Subnet id for private endpoint"
-  type        = string
-  default     = null
-}
-
-variable "private_dns_zone_id" {
-  description = "Private DNS zone id"
-  type        = string
-  default     = null
-}
-
-variable "private_dns_zone_name" {
-  description = "Private DNS zone name"
-  type        = string
-  default     = null
-}
-
-variable "public_network_access_enabled" {
-  description = "Enable public network access"
-  type        = bool
-  default     = true
 }
 
 variable "database_names" {
@@ -70,14 +52,9 @@ variable "database_names" {
   default     = ["appdb"]
 }
 
-variable "app_service_identities" {
-  description = "Map of app service identities to grant database access"
-  type = map(object({
-    principal_id = string
-    app_name     = string
-    database     = string
-  }))
-  default = {}
+variable "app_subnet_id" {
+  description = "App subnet ID for VNet firewall rule"
+  type        = string
 }
 
 variable "backup_storage_redundancy" {
