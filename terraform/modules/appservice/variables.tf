@@ -19,6 +19,18 @@ variable "sku_name" {
   default     = "B1"
 }
 
+variable "service_plan_id" {
+  description = "Existing App Service Plan ID (if not creating new plan)"
+  type        = string
+  default     = null
+}
+
+variable "create_service_plan" {
+  description = "Whether to create a new service plan"
+  type        = bool
+  default     = false
+}
+
 variable "dotnet_version" {
   description = ".NET version"
   type        = string

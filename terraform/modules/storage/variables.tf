@@ -25,9 +25,9 @@ variable "replication_type" {
   default     = "LRS"
 }
 
-variable "public_container_name" {
-  description = "Public blob container name"
-  type        = string
-  default     = "images"
+variable "container_names" {
+  description = "List of container names to create"
+  type        = list(string)
+  default     = ["images"]
 }
 

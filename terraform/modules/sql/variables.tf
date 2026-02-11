@@ -64,8 +64,24 @@ variable "public_network_access_enabled" {
   default     = true
 }
 
-variable "database_name" {
-  description = "Database name"
+variable "database_names" {
+  description = "List of database names to create"
+  type        = list(string)
+  default     = ["appdb"]
+}
+
+variable "app_service_identities" {
+  description = "Map of app service identities to grant database access"
+  type = map(object({
+    principal_id = string
+    app_name     = string
+    database     = string
+  }))
+  default = {}
+}
+
+variable "backup_storage_redundancy" {
+  description = "Backup storage redundancy type: Geo, Local, Zone, or GeoZone"
   type        = string
-  default     = "appdb"
+  default     = "Local"
 }

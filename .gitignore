@@ -9,5 +9,7 @@
 *.terraform.lock.hcl
 
 # Terraform variable files
-terraform/environments/dev/terraform.tfvars
-terraform/environments/prod/terraform.tfvars
+terraform/terraform.tfvars
+
+# Old environment directories (no longer used - can be deleted manually)
+terraform/environments/
