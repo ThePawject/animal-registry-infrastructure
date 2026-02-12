@@ -5,3 +5,10 @@ resource "azurerm_static_web_app" "this" {
   sku_tier            = var.sku_tier
   sku_size            = var.sku_size
 }
+
+resource "azurerm_static_web_app_custom_domain" "this" {
+  for_each          = toset(var.custom_domains)
+  static_web_app_id = azurerm_static_web_app.this.id
+  domain_name       = each.value
+  validation_type   = "cname-delegation"
+}

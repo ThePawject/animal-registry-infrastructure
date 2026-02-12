@@ -37,3 +37,37 @@ output "prod_webapp_name" {
   description = "Prod web app name"
   value       = module.appservice_prod.web_app_name
 }
+
+# Dev Static Web App
+output "dev_static_web_app_name" {
+  description = "Dev static web app name"
+  value       = module.staticweb_dev.static_web_app_name
+}
+
+output "dev_static_web_app_url" {
+  description = "Dev static web app default URL"
+  value       = "https://${module.staticweb_dev.static_web_app_default_hostname}"
+}
+
+output "dev_static_web_app_custom_domains" {
+  description = "Dev static web app custom domains validation info"
+  value       = module.staticweb_dev.custom_domain_validation_tokens
+  sensitive   = true
+}
+
+# Prod Static Web App
+output "prod_static_web_app_name" {
+  description = "Prod static web app name"
+  value       = module.staticweb_prod.static_web_app_name
+}
+
+output "prod_static_web_app_url" {
+  description = "Prod static web app default URL"
+  value       = "https://${module.staticweb_prod.static_web_app_default_hostname}"
+}
+
+output "prod_static_web_app_custom_domains" {
+  description = "Prod static web app custom domains validation info"
+  value       = module.staticweb_prod.custom_domain_validation_tokens
+  sensitive   = true
+}

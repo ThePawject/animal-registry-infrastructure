@@ -98,6 +98,28 @@ module "appservice_prod" {
   }
 }
 
+# Dev Static Web App
+module "staticweb_dev" {
+  source              = "./modules/staticweb"
+  name_prefix         = "${var.project_name}-dev"
+  location            = "westeurope"
+  resource_group_name = azurerm_resource_group.this.name
+  sku_tier            = "Free"
+  sku_size            = "Free"
+  custom_domains      = var.dev_static_web_custom_domains
+}
+
+# Prod Static Web App
+module "staticweb_prod" {
+  source              = "./modules/staticweb"
+  name_prefix         = var.project_name
+  location            = "westeurope"
+  resource_group_name = azurerm_resource_group.this.name
+  sku_tier            = "Free"
+  sku_size            = "Free"
+  custom_domains      = var.prod_static_web_custom_domains
+}
+
 module "keyvault" {
   source              = "./modules/keyvault"
   name_prefix         = var.project_name
