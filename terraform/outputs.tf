@@ -71,3 +71,26 @@ output "prod_static_web_app_custom_domains" {
   value       = module.staticweb_prod.custom_domain_validation_tokens
   sensitive   = true
 }
+
+# Application Insights
+output "application_insights_name" {
+  description = "Application Insights name"
+  value       = module.appinsights.name
+}
+
+output "application_insights_app_id" {
+  description = "Application Insights app ID"
+  value       = module.appinsights.app_id
+}
+
+output "application_insights_instrumentation_key" {
+  description = "Application Insights instrumentation key"
+  value       = module.appinsights.instrumentation_key
+  sensitive   = true
+}
+
+output "application_insights_connection_string" {
+  description = "Application Insights connection string"
+  value       = module.appinsights.connection_string
+  sensitive   = true
+}

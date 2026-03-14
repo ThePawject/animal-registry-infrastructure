@@ -48,3 +48,15 @@ variable "subnet_id" {
   type        = string
   default     = null
 }
+
+variable "cors_allowed_origins" {
+  description = "List of allowed origins for CORS"
+  type        = list(string)
+  default     = []
+}
+
+variable "cors_support_credentials" {
+  description = "Whether CORS should support credentials"
+  type        = bool
+  default     = false
+}

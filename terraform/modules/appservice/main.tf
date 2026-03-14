@@ -26,11 +26,8 @@ resource "azurerm_linux_web_app" "this" {
     }
 
     cors {
-      allowed_origins = [
-        "http://localhost:3000",
-        "https://thepawject.github.io",
-      ]
-      support_credentials = true
+      allowed_origins     = var.cors_allowed_origins
+      support_credentials = var.cors_support_credentials
     }
   }
 

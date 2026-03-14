@@ -33,7 +33,7 @@ variable "aad_admin_object_id" {
 variable "app_service_sku" {
   description = "App Service Plan SKU"
   type        = string
-  default     = "B1"
+  default     = "B2"
 }
 
 variable "dotnet_version" {

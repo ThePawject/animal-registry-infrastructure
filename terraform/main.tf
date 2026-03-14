@@ -66,6 +66,14 @@ resource "azurerm_service_plan" "this" {
   sku_name            = var.app_service_sku
 }
 
+# Shared Application Insights for both dev and prod
+module "appinsights" {
+  source              = "./modules/appinsights"
+  name_prefix         = var.project_name
+  location            = var.location
+  resource_group_name = azurerm_resource_group.this.name
+}
+
 # Dev Web App
 module "appservice_dev" {
   source              = "./modules/appservice"
@@ -75,10 +83,18 @@ module "appservice_dev" {
   service_plan_id     = azurerm_service_plan.this.id
   dotnet_version      = var.dotnet_version
   subnet_id           = module.network.app_subnet_id
+  cors_allowed_origins = [
+    "http://localhost:3000",
+    "https://dev.mojeschronisko.pl",
+  ]
+  cors_support_credentials = true
   app_settings = {
-    "BlobStorage__AccountName"   = module.storage.storage_account_name
-    "BlobStorage__ContainerName" = "dev-animal-images"
-    "Database__ConnectionString" = "@Microsoft.KeyVault(SecretUri=https://${local.key_vault_name}.vault.azure.net/secrets/dev-database-connection-string/)"
+    "BlobStorage__AccountName"                   = module.storage.storage_account_name
+    "BlobStorage__ContainerName"                 = "dev-animal-images"
+    "Database__ConnectionString"                 = "@Microsoft.KeyVault(SecretUri=https://${local.key_vault_name}.vault.azure.net/secrets/dev-database-connection-string/)"
+    "ApplicationInsights__ConnectionString"      = module.appinsights.connection_string
+    "ApplicationInsightsAgent_EXTENSION_VERSION" = "~3"
+    "APPINSIGHTS_CLOUDROLE"                      = "dev-api"
   }
 }
 
@@ -91,10 +107,17 @@ module "appservice_prod" {
   service_plan_id     = azurerm_service_plan.this.id
   dotnet_version      = var.dotnet_version
   subnet_id           = module.network.app_subnet_id
+  cors_allowed_origins = [
+    "https://www.mojeschronisko.pl",
+  ]
+  cors_support_credentials = true
   app_settings = {
-    "BlobStorage__AccountName"   = module.storage.storage_account_name
-    "BlobStorage__ContainerName" = "animal-images"
-    "Database__ConnectionString" = "@Microsoft.KeyVault(SecretUri=https://${local.key_vault_name}.vault.azure.net/secrets/prod-database-connection-string/)"
+    "BlobStorage__AccountName"                   = module.storage.storage_account_name
+    "BlobStorage__ContainerName"                 = "animal-images"
+    "Database__ConnectionString"                 = "@Microsoft.KeyVault(SecretUri=https://${local.key_vault_name}.vault.azure.net/secrets/prod-database-connection-string/)"
+    "ApplicationInsights__ConnectionString"      = module.appinsights.connection_string
+    "ApplicationInsightsAgent_EXTENSION_VERSION" = "~3"
+    "APPINSIGHTS_CLOUDROLE"                      = "prod-api"
   }
 }
 
