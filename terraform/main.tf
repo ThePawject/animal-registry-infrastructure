@@ -57,13 +57,21 @@ module "storage" {
   container_names     = ["dev-animal-images", "animal-images"]
 }
 
-# Shared App Service Plan (B1) for both dev and prod
+# App Service Plan
 resource "azurerm_service_plan" "this" {
   name                = "${var.project_name}-asp"
   resource_group_name = azurerm_resource_group.this.name
   location            = var.location
   os_type             = "Linux"
   sku_name            = var.app_service_sku
+}
+
+resource "azurerm_service_plan" "dev" {
+  name                = "${var.project_name}-free-asp"
+  resource_group_name = azurerm_resource_group.this.name
+  location            = var.location
+  os_type             = "Linux"
+  sku_name            = "F1"
 }
 
 # Shared Application Insights for both dev and prod
@@ -80,9 +88,10 @@ module "appservice_dev" {
   name_prefix         = "${var.project_name}-dev"
   location            = var.location
   resource_group_name = azurerm_resource_group.this.name
-  service_plan_id     = azurerm_service_plan.this.id
+  service_plan_id     = azurerm_service_plan.dev.id
+  always_on           = false
   dotnet_version      = var.dotnet_version
-  subnet_id           = module.network.app_subnet_id
+  # subnet_id           = module.network.app_subnet_id
   cors_allowed_origins = [
     "http://localhost:3000",
     "https://dev.mojeschronisko.pl",

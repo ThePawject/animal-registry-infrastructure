@@ -20,6 +20,7 @@ resource "azurerm_linux_web_app" "this" {
 
   site_config {
     vnet_route_all_enabled = true
+    always_on = var.always_on
 
     application_stack {
       dotnet_version = var.dotnet_version

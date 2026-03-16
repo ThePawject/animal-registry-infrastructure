@@ -13,6 +13,12 @@ variable "resource_group_name" {
   type        = string
 }
 
+variable "always_on" {
+    description = "Whether to enable Always On for the web app"
+    type        = bool
+    default     = true
+}
+
 variable "sku_name" {
   description = "App Service plan SKU"
   type        = string
