@@ -65,7 +65,7 @@ jobs:
     needs: plan
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: ubuntu-latest
-    environment: production
+    environment: azure-prod
     steps:
       - name: Checkout
         uses: actions/checkout@v4
