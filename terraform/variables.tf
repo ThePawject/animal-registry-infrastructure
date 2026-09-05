@@ -48,34 +48,22 @@ variable "sql_sku" {
   default     = "Basic"
 }
 
-variable "sql_database_name" {
-  description = "SQL database name"
-  type        = string
-  default     = "appdb"
-}
-
-variable "public_container_name" {
-  description = "Public blob container name"
-  type        = string
-  default     = "images"
-}
-
 variable "vnet_address_space" {
   description = "VNet address space"
   type        = list(string)
-  default     = ["10.20.0.0/16"]
+  default     = ["10.0.0.0/16"]
 }
 
 variable "app_subnet_prefix" {
   description = "App subnet prefix"
   type        = string
-  default     = "10.20.1.0/24"
+  default     = "10.0.1.0/24"
 }
 
 variable "private_endpoint_subnet_prefix" {
   description = "Private endpoint subnet prefix"
   type        = string
-  default     = "10.20.2.0/24"
+  default     = "10.0.2.0/24"
 }
 
 variable "dev_static_web_custom_domains" {
