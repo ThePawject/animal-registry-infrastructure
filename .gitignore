@@ -6,10 +6,7 @@
 *.tfstate.*
 *.tfplan
 *tfplan
-*.terraform.lock.hcl
 
 # Terraform variable files
 terraform/terraform.tfvars
-
-# Old environment directories (no longer used - can be deleted manually)
 terraform/environments/

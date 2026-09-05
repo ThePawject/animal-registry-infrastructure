@@ -77,3 +77,15 @@ variable "private_endpoint_subnet_prefix" {
   type        = string
   default     = "10.20.2.0/24"
 }
+
+variable "dev_static_web_custom_domains" {
+  description = "Custom domains for dev static web app"
+  type        = list(string)
+  default     = ["dev.mojeschronisko.pl"]
+}
+
+variable "prod_static_web_custom_domains" {
+  description = "Custom domains for prod static web app"
+  type        = list(string)
+  default     = ["www.mojeschronisko.pl"]
+}
