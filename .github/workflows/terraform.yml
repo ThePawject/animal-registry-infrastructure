@@ -30,6 +30,7 @@ jobs:
   plan:
     name: Plan
     runs-on: ubuntu-latest
+    environment: azure-plan
     env:
       ARM_CLIENT_ID: ${{ secrets.PLAN_ARM_CLIENT_ID }}
       ARM_CLIENT_SECRET: ${{ secrets.PLAN_ARM_CLIENT_SECRET }}
@@ -43,7 +44,7 @@ jobs:
           terraform_version: "1.9.8"
 
       - name: Terraform Init
-        run: terraform init -input=false
+        run: terraform init -input=false -lock=false
 
       - name: Terraform Format Check
         run: terraform fmt -check -recursive
@@ -52,7 +53,7 @@ jobs:
         run: terraform validate
 
       - name: Terraform Plan
-        run: terraform plan -input=false -out=tfplan
+        run: terraform plan -input=false -lock=false -out=tfplan
 
       - name: Upload Plan
         uses: actions/upload-artifact@v4
@@ -82,11 +83,8 @@ jobs:
       - name: Terraform Init
         run: terraform init -input=false
 
-      - name: Download Plan
-        uses: actions/download-artifact@v4
-        with:
-          name: tfplan
-          path: terraform
+      - name: Terraform Plan
+        run: terraform plan -input=false -out=tfplan
 
       - name: Terraform Apply
         run: terraform apply -input=false -auto-approve tfplan
