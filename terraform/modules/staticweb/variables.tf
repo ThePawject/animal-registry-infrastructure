@@ -24,3 +24,9 @@ variable "sku_size" {
   type        = string
   default     = "Free"
 }
+
+variable "custom_domains" {
+  description = "List of custom domains for static web app"
+  type        = list(string)
+  default     = []
+}

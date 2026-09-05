@@ -6,8 +6,7 @@
 *.tfstate.*
 *.tfplan
 *tfplan
-*.terraform.lock.hcl
 
 # Terraform variable files
-terraform/environments/dev/terraform.tfvars
-terraform/environments/prod/terraform.tfvars
+terraform/terraform.tfvars
+terraform/environments/

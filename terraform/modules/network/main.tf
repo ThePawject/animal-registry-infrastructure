@@ -10,6 +10,9 @@ resource "azurerm_subnet" "app" {
   resource_group_name  = var.resource_group_name
   virtual_network_name = azurerm_virtual_network.this.name
   address_prefixes     = [var.app_subnet_prefix]
+
+  service_endpoints = ["Microsoft.Sql"]
+
   delegation {
     name = "appservice"
     service_delegation {

@@ -1,45 +1,39 @@
 resource "azurerm_mssql_server" "this" {
-  name                         = "${var.name_prefix}-sql"
-  resource_group_name          = var.resource_group_name
-  location                     = var.location
-  version                      = "12.0"
-  minimum_tls_version          = "1.2"
-  public_network_access_enabled = var.public_network_access_enabled
+  name                          = "${var.name_prefix}-sql"
+  resource_group_name           = var.resource_group_name
+  location                      = var.location
+  version                       = "12.0"
+  minimum_tls_version           = "1.2"
+  public_network_access_enabled = true
 
+  administrator_login          = var.sql_admin_login
+  administrator_login_password = var.sql_admin_password
+
+  # Keep Azure AD admin for your management access
   azuread_administrator {
-    login_username               = var.aad_admin_login
-    object_id                    = var.aad_admin_object_id
-    tenant_id                    = var.aad_admin_tenant_id
-    azuread_authentication_only  = true
+    login_username              = var.aad_admin_login
+    object_id                   = var.aad_admin_object_id
+    tenant_id                   = var.aad_admin_tenant_id
+    azuread_authentication_only = false # Allow both SQL and Azure AD
   }
 }
 
-resource "azurerm_mssql_database" "this" {
-  name      = var.database_name
+resource "azurerm_mssql_database" "databases" {
+  for_each             = toset(var.database_names)
+  name                 = each.value
+  server_id            = azurerm_mssql_server.this.id
+  sku_name             = var.sku_name
+  storage_account_type = var.backup_storage_redundancy
+}
+
+resource "azurerm_mssql_virtual_network_rule" "app_subnet" {
+  name      = "${var.name_prefix}-sql-vnet-rule"
   server_id = azurerm_mssql_server.this.id
-  sku_name  = var.sku_name
-}
+  subnet_id = var.app_subnet_id
 
-resource "azurerm_private_endpoint" "sql" {
-  count               = var.create_private_endpoint ? 1 : 0
-  name                = "${var.name_prefix}-sql-pe"
-  location            = var.location
-  resource_group_name = var.resource_group_name
-  subnet_id           = var.private_endpoint_subnet_id
+  ignore_missing_vnet_service_endpoint = false
 
-  private_service_connection {
-    name                           = "${var.name_prefix}-sql-psc"
-    private_connection_resource_id = azurerm_mssql_server.this.id
-    subresource_names              = ["sqlServer"]
-    is_manual_connection           = false
-  }
-}
-
-resource "azurerm_private_dns_a_record" "sql" {
-  count               = var.create_private_endpoint ? 1 : 0
-  name                = azurerm_mssql_server.this.name
-  zone_name           = var.private_dns_zone_name
-  resource_group_name = var.resource_group_name
-  ttl                 = 300
-  records             = [azurerm_private_endpoint.sql[0].private_service_connection[0].private_ip_address]
+  depends_on = [
+    azurerm_mssql_database.databases
+  ]
 }
