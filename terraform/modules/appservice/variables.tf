@@ -14,9 +14,9 @@ variable "resource_group_name" {
 }
 
 variable "always_on" {
-    description = "Whether to enable Always On for the web app"
-    type        = bool
-    default     = true
+  description = "Whether to enable Always On for the web app"
+  type        = bool
+  default     = true
 }
 
 variable "sku_name" {
