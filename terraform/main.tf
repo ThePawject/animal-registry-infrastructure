@@ -98,12 +98,13 @@ module "appservice_dev" {
   ]
   cors_support_credentials = true
   app_settings = {
-    "BlobStorage__AccountName"                   = module.storage.storage_account_name
-    "BlobStorage__ContainerName"                 = "dev-animal-images"
-    "Database__ConnectionString"                 = "@Microsoft.KeyVault(SecretUri=https://${local.key_vault_name}.vault.azure.net/secrets/dev-database-connection-string/)"
+    "BlobStorage__AccountName"   = module.storage.storage_account_name
+    "BlobStorage__ContainerName" = "dev-animal-images"
+    "Database__ConnectionString" = "@Microsoft.KeyVault(SecretUri=https://${local.key_vault_name}.vault.azure.net/secrets/dev-database-connection-string/)"
+    # TEMPORARY: enabled only on dev to validate the OpenTelemetry setup
     "ApplicationInsights__ConnectionString"      = module.appinsights.connection_string
-    "ApplicationInsightsAgent_EXTENSION_VERSION" = "~3"
-    "APPINSIGHTS_CLOUDROLE"                      = "dev-api"
+    "ApplicationInsightsAgent_EXTENSION_VERSION" = "disabled"
+    "OTEL_SERVICE_NAME"                          = "dev-api"
   }
 }
 
@@ -121,12 +122,12 @@ module "appservice_prod" {
   ]
   cors_support_credentials = true
   app_settings = {
-    "BlobStorage__AccountName"                   = module.storage.storage_account_name
-    "BlobStorage__ContainerName"                 = "animal-images"
-    "Database__ConnectionString"                 = "@Microsoft.KeyVault(SecretUri=https://${local.key_vault_name}.vault.azure.net/secrets/prod-database-connection-string/)"
-    "ApplicationInsights__ConnectionString"      = module.appinsights.connection_string
-    "ApplicationInsightsAgent_EXTENSION_VERSION" = "~3"
-    "APPINSIGHTS_CLOUDROLE"                      = "prod-api"
+    "BlobStorage__AccountName"   = module.storage.storage_account_name
+    "BlobStorage__ContainerName" = "animal-images"
+    "Database__ConnectionString" = "@Microsoft.KeyVault(SecretUri=https://${local.key_vault_name}.vault.azure.net/secrets/prod-database-connection-string/)"
+    # TEMPORARY: no ApplicationInsights connection string until the setup is
+    # validated on dev
+    "ApplicationInsightsAgent_EXTENSION_VERSION" = "disabled"
   }
 }
 
