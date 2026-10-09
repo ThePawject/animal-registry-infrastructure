@@ -15,7 +15,8 @@ resource "azurerm_application_insights" "this" {
   workspace_id        = azurerm_log_analytics_workspace.this.id
   application_type    = "web"
 
-  # Hard cap at 5GB/day to stay within free tier and prevent any charges
-  daily_data_cap_in_gb                  = 5
+  # Free tier is 5GB per MONTH (shared by dev + prod),
+  # ~0.15GB/day keeps the monthly total safely under the 5GB free allowance.
+  daily_data_cap_in_gb                  = var.daily_data_cap_gb
   daily_data_cap_notifications_disabled = false
 }
